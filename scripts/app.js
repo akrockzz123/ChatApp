@@ -4,7 +4,9 @@ const newchatform = document.querySelector('.new-chat');
 
 const newNameForm = document.querySelector('.update-name');
 
-const updatename =  document.querySelector('.updatedname');
+const updatename =  document.querySelector('.updatedname') ;
+
+const chatrooms = document.querySelector('.chat-rooms');
 
 newchatform.addEventListener('submit', e => { // we set up the listener to listen for the changes
 
@@ -24,6 +26,8 @@ newNameForm.addEventListener('submit', e => {
     e.preventDefault();
     const newname = newNameForm.newname.value.trim();
 
+    localStorage.setItem('name',newname);
+
     chatroom.updateName(newname);
 
     newNameForm.reset(); // clearing the name form after submiting
@@ -36,9 +40,36 @@ newNameForm.addEventListener('submit', e => {
 
 });
 
+chatrooms.addEventListener('click', e => {
+
+    e.preventDefault();
+
+    if(e.target.tagName === 'BUTTON')
+    {
+        chatui.clearchat(); // clearing the chat
+
+        chatroom.updateRoom(e.target.getAttribute('id')) // getting the id of the button clicked  => gaming,music etc;
+
+        chatroom.getChats(chat => chatui.render(chat)) // rendering new chat of related room
+    }
+
+
+})
+
 const chatui = new chatUI(chatlist) // create new chaui class instance by passing the reference of chatlist address
 
-const chatroom = new ChatRoom('gaming', 'shaun'); // created new instance of chats class
+const nme = localStorage.getItem('name')
+
+if(nme)
+{
+
+}
+else{
+
+    nme = 'shaun';
+}
+
+const chatroom = new ChatRoom('gaming', nme); // created new instance of chats class
 
 console.log(chatroom)
 
